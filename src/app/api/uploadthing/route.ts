@@ -1,16 +1,6 @@
-import { createRouteHandler } from "uploadthing/server";
+import { createRouteHandler } from "uploadthing/next";
 import { ourFileRouter } from "./core";
 
-const handler = createRouteHandler({
+export const { GET, POST } = createRouteHandler({
   router: ourFileRouter,
 });
-
-// uploadthing v7 handler accepts Request | { request: Request }
-// Next.js App Router expects Request - cast to satisfy the type checker
-export async function GET(request: Request) {
-  return (handler as (req: Request) => Promise<Response>)(request);
-}
-
-export async function POST(request: Request) {
-  return (handler as (req: Request) => Promise<Response>)(request);
-}
