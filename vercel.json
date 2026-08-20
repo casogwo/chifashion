@@ -1,0 +1,5 @@
+{
+  "buildCommand": "bash vercel-prebuild.sh && prisma generate && next build",
+  "framework": "nextjs",
+  "installCommand": "npm install"
+}
