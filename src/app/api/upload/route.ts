@@ -11,7 +11,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'No file provided' }, { status: 400 });
     }
 
-    // Validate file type
     const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
     if (!allowed.includes(file.type)) {
       return NextResponse.json(
@@ -20,7 +19,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Max 5MB
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json(
         { success: false, error: 'File too large. Max 5MB' },
@@ -31,18 +29,25 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Generate unique filename
-    const ext = file.name.split('.').pop() || 'jpg';
-    const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    const filepath = path.join(uploadDir, filename);
+    // Try to save to filesystem first (works locally)
+    try {
+      const ext = file.name.split('.').pop() || 'jpg';
+      const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+      const filepath = path.join(uploadDir, filename);
 
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(filepath, buffer);
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(filepath, buffer);
 
-    const url = `/uploads/${filename}`;
-
-    return NextResponse.json({ success: true, url });
+      const url = `/uploads/${filename}`;
+      return NextResponse.json({ success: true, url });
+    } catch {
+      // Fallback: convert to base64 data URL (works everywhere including Vercel)
+      const base64 = buffer.toString('base64');
+      const mimeType = file.type;
+      const url = `data:${mimeType};base64,${base64}`;
+      return NextResponse.json({ success: true, url });
+    }
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json({ success: false, error: 'Upload failed' }, { status: 500 });
