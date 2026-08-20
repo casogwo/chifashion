@@ -14,7 +14,9 @@ interface Product {
   occasion: string | null;
   featured: boolean;
   category: { name: string; slug: string };
-  sizes?: string;
+  sizes: string[];
+  colors: string[];
+  stock: number;
 }
 
 const ALL_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -62,10 +64,7 @@ export default function ShopFilters({
     if (gender) result = result.filter((p) => p.gender === gender);
     if (occasion) result = result.filter((p) => p.occasion === occasion);
     if (size) {
-      result = result.filter((p) => {
-        const sizes = JSON.parse(p.sizes || '[]');
-        return sizes.includes(size);
-      });
+      result = result.filter((p) => p.sizes.includes(size));
     }
     if (minPrice) result = result.filter((p) => (p.salePrice || p.price) >= Number(minPrice));
     if (maxPrice) result = result.filter((p) => (p.salePrice || p.price) <= Number(maxPrice));

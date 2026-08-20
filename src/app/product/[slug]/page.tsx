@@ -161,7 +161,11 @@ export default async function ProductPage({
             {related.map((p) => (
               <ProductCard
                 key={p.id}
-                product={p}
+                product={{
+                  ...p,
+                  sizes: JSON.parse(p.sizes || '[]'),
+                  colors: JSON.parse(p.colors || '[]'),
+                }}
               />
             ))}
           </div>

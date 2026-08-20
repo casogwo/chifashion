@@ -49,8 +49,8 @@ export default async function ShopPage({
       <ShopFilters
         products={products.map((p) => ({
           ...p,
-          sizes: p.sizes,
-          colors: p.colors,
+          sizes: JSON.parse(p.sizes || '[]'),
+          colors: JSON.parse(p.colors || '[]'),
           images: p.images,
         }))}
         categories={categories}

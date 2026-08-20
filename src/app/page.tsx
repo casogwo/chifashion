@@ -5,6 +5,12 @@ import ProductCard from '@/components/ProductCard';
 
 export const dynamic = 'force-dynamic';
 
+const parseProduct = (p: any) => ({
+  ...p,
+  sizes: JSON.parse(p.sizes || '[]'),
+  colors: JSON.parse(p.colors || '[]'),
+});
+
 async function getHomeData() {
   const [featured, newArrivals, content] = await Promise.all([
     prisma.product.findMany({
@@ -21,7 +27,7 @@ async function getHomeData() {
   ]);
 
   const contentMap = Object.fromEntries(content.map((c) => [c.key, c.value]));
-  return { featured, newArrivals, contentMap };
+  return { featured: featured.map(parseProduct), newArrivals: newArrivals.map(parseProduct), contentMap };
 }
 
 export default async function HomePage() {
