@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useUploadThing } from '@/lib/uploadthing';
+import { useState, useRef } from 'react';
 
 export default function ImageUpload({
   value,
@@ -14,18 +13,9 @@ export default function ImageUpload({
   label: string;
   required?: boolean;
 }) {
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
-  const { startUpload, isUploading } = useUploadThing('imageUploader', {
-    onClientUploadComplete: (res) => {
-      if (res && res[0]) {
-        onChange(res[0].url);
-        setError('');
-      }
-    },
-    onUploadError: (err) => {
-      setError('Upload failed: ' + err.message);
-    },
-  });
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,14 +26,32 @@ export default function ImageUpload({
       return;
     }
 
+    setUploading(true);
     setError('');
-    try {
-      await startUpload([file]);
-    } catch {
-      setError('Upload failed');
-    }
 
-    if (e.target) e.target.value = '';
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        onChange(data.url);
+        setError('');
+      } else {
+        setError(data.error || 'Upload failed');
+      }
+    } catch {
+      setError('Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = '';
+    }
   };
 
   return (
@@ -68,24 +76,25 @@ export default function ImageUpload({
       )}
 
       <label className={`block border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
-        isUploading
+        uploading
           ? 'border-brand-400 bg-brand-50'
           : value
             ? 'border-brand-300 bg-brand-50/50 hover:bg-brand-50'
             : 'border-gray-300 hover:border-brand-400 hover:bg-gray-50'
       }`}>
         <input
+          ref={fileRef}
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          disabled={isUploading}
+          disabled={uploading}
           className="sr-only"
         />
 
-        {isUploading ? (
+        {uploading ? (
           <div className="flex flex-col items-center gap-2 py-2">
             <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-gray-500">Uploading to cloud...</p>
+            <p className="text-sm text-gray-500">Uploading...</p>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2 py-2">
