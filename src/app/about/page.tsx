@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'About Us | ChiFashion',
   description: 'Learn about ChiFashion - a premium Nigerian fashion brand.',

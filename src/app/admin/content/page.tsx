@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import ContentEditor from '@/components/ContentEditor';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Content | Admin - ChiFashion',
 };

@@ -3,6 +3,8 @@ import { formatPrice } from '@/lib/utils';
 import Link from 'next/link';
 import DeleteProductButton from '@/components/DeleteProductButton';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Products | Admin - ChiFashion',
 };
@@ -15,20 +17,21 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-gray-900">Products</h1>
-          <p className="text-gray-500 text-sm mt-1">{products.length} products</p>
+          <h1 className="text-xl sm:text-2xl font-serif font-bold text-gray-900">Products</h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-1">{products.length} products</p>
         </div>
         <Link
           href="/admin/products/new"
-          className="bg-brand-500 hover:bg-brand-600 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors"
+          className="bg-brand-500 hover:bg-brand-600 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-colors"
         >
           + Add Product
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden md:block bg-white rounded-xl border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -96,6 +99,48 @@ export default async function AdminProductsPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-3">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white rounded-xl border border-gray-100 p-4">
+            <div className="flex gap-3">
+              <div className="relative w-16 h-20 rounded-lg overflow-hidden bg-brand-50 shrink-0">
+                <img src={product.image} alt="" className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">{product.name}</p>
+                <p className="text-xs text-gray-500">{product.category?.name} · {product.gender}</p>
+                <div className="mt-1">
+                  {product.salePrice ? (
+                    <span className="text-sm font-bold text-brand-600">{formatPrice(product.salePrice)}</span>
+                  ) : (
+                    <span className="text-sm font-bold">{formatPrice(product.price)}</span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between mt-2">
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                    product.status === 'active' ? 'bg-green-100 text-green-700' :
+                    product.status === 'draft' ? 'bg-gray-100 text-gray-600' :
+                    'bg-red-100 text-red-700'
+                  }`}>
+                    {product.status}
+                  </span>
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={`/admin/products/${product.id}/edit`}
+                      className="text-brand-600 text-xs font-medium"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteProductButton productId={product.id} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

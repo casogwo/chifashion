@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import ProductForm from '@/components/ProductForm';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Add Product | Admin - ChiFashion',
 };

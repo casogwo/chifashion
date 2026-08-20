@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { formatPrice } from '@/lib/utils';
 import UpdateOrderStatus from '@/components/UpdateOrderStatus';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Orders | Admin - ChiFashion',
 };

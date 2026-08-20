@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { formatPrice } from '@/lib/utils';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Admin Dashboard | ChiFashion',
 };

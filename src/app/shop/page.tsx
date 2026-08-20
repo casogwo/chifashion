@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import ShopFilters from '@/components/ShopFilters';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Shop | ChiFashion',
   description: 'Browse our curated collection of premium fashion for every occasion.',

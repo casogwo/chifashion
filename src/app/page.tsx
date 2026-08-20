@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import ProductCard from '@/components/ProductCard';
 
+export const dynamic = 'force-dynamic';
+
 async function getHomeData() {
   const [featured, newArrivals, content] = await Promise.all([
     prisma.product.findMany({
