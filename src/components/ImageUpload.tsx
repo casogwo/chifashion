@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import { useUploadThing } from '@/lib/uploadthing';
 
 export default function ImageUpload({
   value,
@@ -13,43 +14,42 @@ export default function ImageUpload({
   label: string;
   required?: boolean;
 }) {
-  const [uploading, setUploading] = useState(false);
-  const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { startUpload, isUploading } = useUploadThing('imageUploader', {
+    onClientUploadComplete: (res) => {
+      if (res && res[0]) {
+        onChange(res[0].url);
+        setError('');
+      }
+    },
+    onUploadError: (err) => {
+      setError('Upload failed: ' + err.message);
+    },
+  });
 
-  const uploadFile = async (file: File) => {
-    setUploading(true);
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 4 * 1024 * 1024) {
+      setError('File too large. Max 4MB');
+      return;
+    }
+
     setError('');
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        onChange(data.url);
-        setError('');
-      } else {
-        setError(data.error || 'Upload failed');
-      }
+      await startUpload([file]);
     } catch {
-      setError('Upload failed. Check your connection.');
-    } finally {
-      setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      setError('Upload failed');
     }
+
+    if (e.target) e.target.value = '';
   };
 
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
 
-      {/* Current image preview with change button */}
       {value && (
         <div className="mb-3 relative inline-block">
           <img
@@ -67,40 +67,25 @@ export default function ImageUpload({
         </div>
       )}
 
-      {/* Upload button area */}
-      <div
-        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-        onDragLeave={() => setDragOver(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDragOver(false);
-          const file = e.dataTransfer.files?.[0];
-          if (file) uploadFile(file);
-        }}
-        onClick={() => fileInputRef.current?.click()}
-        className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
-          dragOver
-            ? 'border-brand-500 bg-brand-50'
-            : value
-              ? 'border-brand-300 bg-brand-50/50 hover:bg-brand-50'
-              : 'border-gray-300 hover:border-brand-400 hover:bg-gray-50'
-        }`}
-      >
+      <label className={`block border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
+        isUploading
+          ? 'border-brand-400 bg-brand-50'
+          : value
+            ? 'border-brand-300 bg-brand-50/50 hover:bg-brand-50'
+            : 'border-gray-300 hover:border-brand-400 hover:bg-gray-50'
+      }`}>
         <input
-          ref={fileInputRef}
           type="file"
           accept="image/*"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) uploadFile(file);
-          }}
-          style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}
+          onChange={handleFileChange}
+          disabled={isUploading}
+          className="sr-only"
         />
 
-        {uploading ? (
+        {isUploading ? (
           <div className="flex flex-col items-center gap-2 py-2">
             <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-gray-500">Uploading...</p>
+            <p className="text-sm text-gray-500">Uploading to cloud...</p>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2 py-2">
@@ -112,10 +97,10 @@ export default function ImageUpload({
             <p className="text-sm text-gray-700 font-medium">
               {value ? 'Click to replace image' : 'Click to upload image'}
             </p>
-            <p className="text-xs text-gray-400">JPEG, PNG, WebP, GIF (max 5MB)</p>
+            <p className="text-xs text-gray-400">JPEG, PNG, WebP, GIF (max 4MB)</p>
           </div>
         )}
-      </div>
+      </label>
 
       {error && (
         <div className="mt-2 flex items-center gap-1 text-xs text-red-500">
@@ -126,7 +111,6 @@ export default function ImageUpload({
         </div>
       )}
 
-      {/* URL fallback */}
       <div className="flex items-center gap-3 my-3">
         <div className="flex-1 h-px bg-gray-200" />
         <span className="text-xs text-gray-400">or paste URL</span>
