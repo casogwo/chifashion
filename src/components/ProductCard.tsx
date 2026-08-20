@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
 import { useCart } from '@/components/CartProvider';
 import { useToast } from '@/components/Toast';
@@ -66,13 +65,10 @@ export default function ProductCard({ product }: { product: Product }) {
     <div className="product-card group block">
       <Link href={`/product/${product.slug}`}>
         <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-brand-50 mb-3">
-          <Image
+          <img
             src={product.image}
             alt={product.name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover"
-            priority={product.featured}
+            className="w-full h-full object-cover"
           />
           {discount && (
             <span className="absolute top-2 left-2 bg-brand-500 text-white text-xs font-bold px-2 py-1 rounded-full">

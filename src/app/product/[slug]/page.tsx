@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { formatPrice } from '@/lib/utils';
@@ -68,13 +67,10 @@ export default async function ProductPage({
         {/* Images */}
         <div>
           <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-brand-50">
-            <Image
+            <img
               src={product.image}
               alt={product.name}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="w-full h-full object-cover"
             />
             {product.salePrice && (
               <span className="absolute top-4 left-4 bg-brand-500 text-white text-sm font-bold px-3 py-1.5 rounded-full">
@@ -86,7 +82,7 @@ export default async function ProductPage({
             <div className="flex gap-2 mt-4">
               {images.slice(0, 4).map((img: string, i: number) => (
                 <div key={i} className="relative w-20 h-24 rounded-lg overflow-hidden bg-brand-50 border-2 border-brand-200">
-                  <Image src={img} alt="" fill className="object-cover" sizes="80px" />
+                  <img src={img} alt="" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

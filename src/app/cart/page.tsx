@@ -2,7 +2,6 @@
 
 import { useCart } from '@/components/CartProvider';
 import { formatPrice } from '@/lib/utils';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function CartPage() {
@@ -39,7 +38,7 @@ export default function CartPage() {
             className="flex gap-4 p-4 bg-white border border-gray-100 rounded-xl"
           >
             <div className="relative w-20 h-24 sm:w-24 sm:h-28 rounded-lg overflow-hidden bg-brand-50 shrink-0">
-              <Image src={item.image} alt={item.name} fill className="object-cover" sizes="96px" />
+              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 min-w-0">
               <Link
