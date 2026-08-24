@@ -14,8 +14,10 @@ export async function GET() {
         bank_name: map.bank_name || 'Guaranty Trust Bank (GTBank)',
         account_number: map.account_number || '0637568363',
         account_name: map.account_name || 'Asogwo Chinaza Peace',
-        phone: map.phone || '091645033555',
+        phone: map.phone || '09164503355',
+        whatsapp: map.whatsapp || '09164503355',
         email: map.email || 'asogwochinazapeace@gmail.com',
+        delivery_fee: parseInt(map.delivery_fee || '2500', 10),
       },
     });
   } catch {

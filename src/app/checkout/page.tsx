@@ -10,21 +10,36 @@ interface StoreSettings {
   account_number: string;
   account_name: string;
   phone: string;
+  whatsapp: string;
   email: string;
+  delivery_fee: number;
 }
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
-  const total = subtotal;
 
   const [settings, setSettings] = useState<StoreSettings>({
     bank_name: 'Guaranty Trust Bank (GTBank)',
     account_number: '0637568363',
     account_name: 'Asogwo Chinaza Peace',
-    phone: '091645033555',
+    phone: '09164503355',
+    whatsapp: '09164503355',
     email: 'asogwochinazapeace@gmail.com',
+    delivery_fee: 2500,
   });
+
+  useEffect(() => {
+    fetch('/api/settings/public')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.settings) setSettings((prev) => ({ ...prev, ...data.settings }));
+      })
+      .catch(() => {});
+  }, []);
+
+  const deliveryFee = settings.delivery_fee || 2500;
+  const total = subtotal + deliveryFee;
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -38,15 +53,6 @@ export default function CheckoutPage() {
     country: 'Nigeria',
     paymentMethod: 'transfer',
   });
-
-  useEffect(() => {
-    fetch('/api/settings/public')
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.settings) setSettings(data.settings);
-      })
-      .catch(() => {});
-  }, []);
 
   const update = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -72,6 +78,7 @@ export default function CheckoutPage() {
             image: item.image,
           })),
           subtotal,
+          shipping: deliveryFee,
           total,
         }),
       });
@@ -100,7 +107,6 @@ export default function CheckoutPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
       <h1 className="text-2xl lg:text-3xl font-serif text-gray-900 mb-8">Checkout</h1>
 
-      {/* Progress Steps */}
       <div className="flex items-center justify-center gap-4 mb-10">
         {['Information', 'Delivery', 'Payment'].map((s, i) => (
           <div key={s} className="flex items-center gap-2">
@@ -125,7 +131,6 @@ export default function CheckoutPage() {
 
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
-          {/* Step 1: Customer Information */}
           {step === 1 && (
             <div className="space-y-4">
               <h2 className="font-serif text-lg font-bold mb-4">Your Information</h2>
@@ -160,7 +165,6 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {/* Step 2: Delivery */}
           {step === 2 && (
             <div className="space-y-4">
               <h2 className="font-serif text-lg font-bold mb-4">Delivery Address</h2>
@@ -215,12 +219,10 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {/* Step 3: Payment */}
           {step === 3 && (
             <div className="space-y-4">
               <h2 className="font-serif text-lg font-bold mb-4">Payment</h2>
 
-              {/* Bank Transfer Details */}
               <div className="bg-brand-50 border border-brand-200 rounded-xl p-5">
                 <h3 className="font-serif font-bold text-sm mb-3">Make a Bank Transfer</h3>
                 <div className="space-y-2 text-sm">
@@ -249,7 +251,7 @@ export default function CheckoutPage() {
 
               <div className="flex gap-3">
                 <a
-                  href={`https://wa.me/${settings.phone}`}
+                  href={`https://wa.me/${settings.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-green-500 hover:bg-green-600 text-white text-center py-3 rounded-full text-sm font-medium transition-colors"
@@ -283,7 +285,6 @@ export default function CheckoutPage() {
           )}
         </div>
 
-        {/* Order Summary */}
         <div className="lg:col-span-2">
           <div className="bg-brand-50 rounded-xl p-5 sticky top-24">
             <h3 className="font-serif font-bold mb-4">Order Summary</h3>
@@ -305,8 +306,16 @@ export default function CheckoutPage() {
                 </div>
               ))}
             </div>
-            <div className="border-t border-brand-200 pt-3">
-              <div className="flex justify-between font-bold">
+            <div className="border-t border-brand-200 pt-3 space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Subtotal</span>
+                <span>{formatPrice(subtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Delivery Fee</span>
+                <span>{formatPrice(deliveryFee)}</span>
+              </div>
+              <div className="flex justify-between font-bold border-t border-brand-200 pt-2">
                 <span>Total</span>
                 <span className="text-brand-600">{formatPrice(total)}</span>
               </div>

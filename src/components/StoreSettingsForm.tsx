@@ -15,6 +15,7 @@ const SECTIONS = [
       { key: 'store_name', label: 'Store Name', type: 'text' },
       { key: 'phone', label: 'Phone Number', type: 'text' },
       { key: 'email', label: 'Email Address', type: 'text' },
+      { key: 'whatsapp', label: 'WhatsApp Number', type: 'text' },
       { key: 'address', label: 'Address', type: 'text' },
       { key: 'instagram', label: 'Instagram Handle', type: 'text' },
       { key: 'twitter', label: 'Twitter Handle', type: 'text' },
@@ -26,6 +27,12 @@ const SECTIONS = [
       { key: 'bank_name', label: 'Bank Name', type: 'text' },
       { key: 'account_number', label: 'Account Number', type: 'text' },
       { key: 'account_name', label: 'Account Name', type: 'text' },
+    ],
+  },
+  {
+    title: 'Delivery',
+    fields: [
+      { key: 'delivery_fee', label: 'Delivery Fee (₦)', type: 'text' },
     ],
   },
   {

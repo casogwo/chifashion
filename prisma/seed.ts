@@ -483,6 +483,8 @@ async function main() {
     { key: 'address', value: 'Lagos, Nigeria' },
     { key: 'shipping_threshold', value: '50000' },
     { key: 'shipping_fee', value: '2500' },
+    { key: 'delivery_fee', value: '2500' },
+    { key: 'whatsapp', value: '09164503355' },
     { key: 'instagram', value: '@chifashion' },
     { key: 'twitter', value: '@chifashion' },
     { key: 'bank_name', value: 'Guaranty Trust Bank (GTBank)' },

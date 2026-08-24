@@ -183,7 +183,7 @@ export default async function HomePage() {
               </p>
               <div className="flex gap-3">
                 <a
-                  href={`https://wa.me/${settingsMap.phone || '091645033555'}`}
+                  href={`https://wa.me/${settingsMap.whatsapp || '09164503355'}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-green-500 hover:bg-green-600 text-white text-center py-2.5 rounded-full text-xs font-medium transition-colors"
