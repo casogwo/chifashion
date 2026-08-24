@@ -96,7 +96,7 @@ export default async function ProductPage({
           </p>
           <h1 className="text-2xl lg:text-3xl font-serif text-gray-900 mb-4">{product.name}</h1>
 
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-2">
             {product.salePrice ? (
               <>
                 <span className="text-2xl font-bold text-brand-600">{formatPrice(product.salePrice)}</span>
@@ -109,6 +109,9 @@ export default async function ProductPage({
               <span className="text-2xl font-bold text-gray-900">{formatPrice(product.price)}</span>
             )}
           </div>
+          <p className="text-sm text-gray-500 mb-6">
+            Delivery fee: <span className="font-medium text-gray-700">{formatPrice(product.deliveryFee || 2500)}</span>
+          </p>
 
           <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
 

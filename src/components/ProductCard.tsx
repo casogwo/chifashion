@@ -110,6 +110,9 @@ export default function ProductCard({ product }: { product: Product }) {
               </span>
             )}
           </div>
+          <p className="text-[11px] text-gray-400 mt-0.5">
+            Delivery: {formatPrice(product.deliveryFee || 2500)}
+          </p>
         </Link>
 
         <div className="relative">
