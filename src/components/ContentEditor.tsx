@@ -10,6 +10,7 @@ interface ContentItem {
 }
 
 const LABELS: Record<string, string> = {
+  hero_tagline: 'Hero Tagline (e.g. New Collection 2026)',
   hero_heading: 'Hero Heading',
   hero_subheading: 'Hero Subheading',
   hero_cta: 'Hero CTA Button Text',

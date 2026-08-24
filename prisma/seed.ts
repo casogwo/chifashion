@@ -432,6 +432,10 @@ async function main() {
       value: 'Redefine Your Style',
     },
     {
+      key: 'hero_tagline',
+      value: 'New Collection 2026',
+    },
+    {
       key: 'hero_subheading',
       value:
         'Curated fashion for the modern Nigerian. From everyday elegance to statement pieces for every occasion.',

@@ -51,7 +51,7 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-xl">
               <p className="text-brand-200 text-sm tracking-[0.2em] uppercase mb-3 font-medium">
-                New Collection 2024
+                {contentMap.hero_tagline || 'New Collection 2026'}
               </p>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-white leading-tight mb-4">
                 {contentMap.hero_heading || 'Redefine Your Style'}
