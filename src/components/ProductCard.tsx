@@ -56,7 +56,10 @@ export default function ProductCard({ product }: { product: Product }) {
       color: product.colors?.[0] || '',
       stock: product.stock,
     });
-    showToast(`${product.name} added to cart`, product.image);
+    showToast(`${product.name} added to cart`, product.image, 'success', [
+      { label: 'Continue Shopping' },
+      { label: 'Proceed to Payment', href: '/checkout' },
+    ]);
     setShowSizeSelect(false);
     setTimeout(() => setAdding(false), 600);
   };

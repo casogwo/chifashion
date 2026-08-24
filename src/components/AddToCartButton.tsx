@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useCart } from '@/components/CartProvider';
+import { useToast } from '@/components/Toast';
 
 interface Props {
   product: {
@@ -18,6 +19,7 @@ interface Props {
 
 export default function AddToCartButton({ product }: Props) {
   const { addItem } = useCart();
+  const { showToast } = useToast();
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || '');
   const [selectedColor, setSelectedColor] = useState(product.colors[0] || '');
   const [quantity, setQuantity] = useState(1);
@@ -36,6 +38,10 @@ export default function AddToCartButton({ product }: Props) {
       quantity,
     });
     setAdded(true);
+    showToast(`${product.name} added to cart`, product.image, 'success', [
+      { label: 'Continue Shopping' },
+      { label: 'Proceed to Payment', href: '/checkout' },
+    ]);
     setTimeout(() => setAdded(false), 2000);
   };
 

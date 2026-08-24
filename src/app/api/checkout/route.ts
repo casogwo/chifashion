@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const {
       name, email, phone, address, city, state, country,
-      items, subtotal, shipping, total, paymentMethod,
+      items, subtotal, total, paymentMethod,
     } = body;
 
     if (!name || !email || !phone || !address || !city || !state || !items?.length) {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
         state,
         country: country || 'Nigeria',
         subtotal,
-        shipping,
+        shipping: 0,
         total,
         status: 'confirmed',
         paymentStatus: paymentMethod === 'cod' ? 'pending' : 'paid',

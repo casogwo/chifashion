@@ -1,15 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/CartProvider';
 import { formatPrice } from '@/lib/utils';
 
+interface StoreSettings {
+  bank_name: string;
+  account_number: string;
+  account_name: string;
+  phone: string;
+  email: string;
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
-  const shipping = subtotal >= 50000 ? 0 : 2500;
-  const total = subtotal + shipping;
+  const total = subtotal;
+
+  const [settings, setSettings] = useState<StoreSettings>({
+    bank_name: 'Guaranty Trust Bank (GTBank)',
+    account_number: '0637568363',
+    account_name: 'Asogwo Chinaza Peace',
+    phone: '091645033555',
+    email: 'asogwochinazapeace@gmail.com',
+  });
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -21,8 +36,17 @@ export default function CheckoutPage() {
     city: '',
     state: '',
     country: 'Nigeria',
-    paymentMethod: 'card',
+    paymentMethod: 'transfer',
   });
+
+  useEffect(() => {
+    fetch('/api/settings/public')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.settings) setSettings(data.settings);
+      })
+      .catch(() => {});
+  }, []);
 
   const update = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -48,7 +72,6 @@ export default function CheckoutPage() {
             image: item.image,
           })),
           subtotal,
-          shipping,
           total,
         }),
       });
@@ -195,62 +218,52 @@ export default function CheckoutPage() {
           {/* Step 3: Payment */}
           {step === 3 && (
             <div className="space-y-4">
-              <h2 className="font-serif text-lg font-bold mb-4">Payment Method</h2>
-              <div className="space-y-3">
-                {[
-                  { value: 'transfer', label: 'Bank Transfer', desc: 'Pay via bank transfer to our GTBank account' },
-                  { value: 'cod', label: 'Cash on Delivery', desc: 'Pay when you receive your order' },
-                ].map((method) => (
-                  <label
-                    key={method.value}
-                    className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${
-                      form.paymentMethod === method.value
-                        ? 'border-brand-500 bg-brand-50'
-                        : 'border-gray-200 hover:border-brand-300'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value={method.value}
-                      checked={form.paymentMethod === method.value}
-                      onChange={(e) => update('paymentMethod', e.target.value)}
-                      className="accent-brand-500"
-                    />
-                    <div>
-                      <p className="text-sm font-medium">{method.label}</p>
-                      <p className="text-xs text-gray-500">{method.desc}</p>
-                    </div>
-                  </label>
-                ))}
+              <h2 className="font-serif text-lg font-bold mb-4">Payment</h2>
+
+              {/* Bank Transfer Details */}
+              <div className="bg-brand-50 border border-brand-200 rounded-xl p-5">
+                <h3 className="font-serif font-bold text-sm mb-3">Make a Bank Transfer</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Bank</span>
+                    <span className="font-medium">{settings.bank_name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Account Number</span>
+                    <span className="font-bold text-lg">{settings.account_number}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Account Name</span>
+                    <span className="font-medium">{settings.account_name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Amount</span>
+                    <span className="font-bold text-brand-600">{formatPrice(total)}</span>
+                  </div>
+                </div>
               </div>
 
-              {form.paymentMethod === 'transfer' && (
-                <div className="bg-brand-50 border border-brand-200 rounded-xl p-5 mt-4">
-                  <h3 className="font-serif font-bold text-sm mb-3">Bank Transfer Details</h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Bank</span>
-                      <span className="font-medium">Guaranty Trust Bank (GTBank)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Account Number</span>
-                      <span className="font-medium">0637568363</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Account Name</span>
-                      <span className="font-medium">Asogwo Chinaza Peace</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Amount</span>
-                      <span className="font-bold text-brand-600">{formatPrice(total)}</span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-3 border-t border-brand-200 pt-3">
-                    After transferring, please send your payment receipt to our WhatsApp or email so we can process your order.
-                  </p>
-                </div>
-              )}
+              <p className="text-xs text-gray-500 text-center">
+                After transferring, send your payment receipt via WhatsApp or email so we can process your order.
+              </p>
+
+              <div className="flex gap-3">
+                <a
+                  href={`https://wa.me/${settings.phone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-green-500 hover:bg-green-600 text-white text-center py-3 rounded-full text-sm font-medium transition-colors"
+                >
+                  Send Receipt on WhatsApp
+                </a>
+                <a
+                  href={`mailto:${settings.email}?subject=Payment Confirmation - ${formatPrice(total)}`}
+                  className="flex-1 border border-gray-300 hover:border-brand-400 text-gray-700 text-center py-3 rounded-full text-sm font-medium transition-colors"
+                >
+                  Email Receipt
+                </a>
+              </div>
+
               <div className="flex gap-3 mt-4">
                 <button
                   onClick={() => setStep(2)}
@@ -263,7 +276,7 @@ export default function CheckoutPage() {
                   disabled={loading}
                   className="flex-1 bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 text-white py-3.5 rounded-full font-medium text-sm transition-colors"
                 >
-                  {loading ? 'Processing...' : `Pay ${formatPrice(total)}`}
+                  {loading ? 'Processing...' : 'Place Order'}
                 </button>
               </div>
             </div>
@@ -292,16 +305,8 @@ export default function CheckoutPage() {
                 </div>
               ))}
             </div>
-            <div className="border-t border-brand-200 pt-3 space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Subtotal</span>
-                <span>{formatPrice(subtotal)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Shipping</span>
-                <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
-              </div>
-              <div className="flex justify-between font-bold border-t border-brand-200 pt-2">
+            <div className="border-t border-brand-200 pt-3">
+              <div className="flex justify-between font-bold">
                 <span>Total</span>
                 <span className="text-brand-600">{formatPrice(total)}</span>
               </div>

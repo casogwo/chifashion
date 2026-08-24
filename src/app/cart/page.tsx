@@ -6,8 +6,7 @@ import Link from 'next/link';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal, totalItems } = useCart();
-  const shipping = subtotal >= 50000 ? 0 : 2500;
-  const total = subtotal + shipping;
+  const total = subtotal;
 
   if (items.length === 0) {
     return (
@@ -93,21 +92,6 @@ export default function CartPage() {
             <span className="text-gray-600">Subtotal</span>
             <span className="font-medium">{formatPrice(subtotal)}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Shipping</span>
-            <span className="font-medium">
-              {shipping === 0 ? (
-                <span className="text-green-600">Free</span>
-              ) : (
-                formatPrice(shipping)
-              )}
-            </span>
-          </div>
-          {shipping > 0 && (
-            <p className="text-xs text-brand-600">
-              Free shipping on orders over ₦50,000. Add {formatPrice(50000 - subtotal)} more!
-            </p>
-          )}
           <div className="border-t border-brand-200 pt-2 flex justify-between">
             <span className="font-bold">Total</span>
             <span className="font-bold text-brand-600">{formatPrice(total)}</span>
