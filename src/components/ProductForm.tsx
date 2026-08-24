@@ -305,7 +305,7 @@ export default function ProductForm({
           <div className="flex flex-wrap gap-3 mb-4">
             {gallery.map((img, i) => (
               <div key={i} className="relative group w-24 h-28 rounded-lg overflow-hidden border border-gray-200 bg-brand-50">
-                <img src={img} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover" />
+                 <img src={img} alt={`Gallery ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors" />
                 <div className="absolute inset-0 hidden group-hover:flex items-center justify-center gap-1">
                   {i > 0 && (

@@ -38,7 +38,7 @@ export default function CartPage() {
             className="flex gap-4 p-4 bg-white border border-gray-100 rounded-xl"
           >
             <div className="relative w-20 h-24 sm:w-24 sm:h-28 rounded-lg overflow-hidden bg-brand-50 shrink-0">
-              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+              <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 min-w-0">
               <Link

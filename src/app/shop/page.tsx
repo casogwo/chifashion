@@ -19,15 +19,31 @@ export default async function ShopPage({
   const search = typeof searchParams.search === 'string' ? searchParams.search : undefined;
   const featured = typeof searchParams.featured === 'string' ? searchParams.featured : undefined;
 
-  const products = await prisma.product.findMany({
-    where: { status: 'active' },
-    include: { category: true },
-    orderBy: { createdAt: 'desc' },
-  });
+  const where: any = { status: 'active' };
 
-  const categories = await prisma.category.findMany({
-    orderBy: { name: 'asc' },
-  });
+  if (category) {
+    const cat = await prisma.category.findUnique({ where: { slug: category } });
+    if (cat) where.categoryId = cat.id;
+  }
+  if (gender) where.gender = gender;
+  if (occasion) where.occasion = occasion;
+  if (featured === 'true') where.featured = true;
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: 'insensitive' } },
+      { description: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+
+  const [products, categories] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      include: { category: true },
+      orderBy: { createdAt: 'desc' },
+      take: 60,
+    }),
+    prisma.category.findMany({ orderBy: { name: 'asc' } }),
+  ]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
@@ -43,7 +59,7 @@ export default async function ShopPage({
             ? occasion.charAt(0).toUpperCase() + occasion.slice(1) + ' Collection'
             : 'Shop All'}
         </h1>
-        <p className="text-gray-500 text-sm">Discover your perfect look</p>
+        <p className="text-gray-500 text-sm">{products.length} products</p>
       </div>
 
       <ShopFilters

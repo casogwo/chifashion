@@ -13,11 +13,11 @@ export default async function AdminDashboard() {
     await Promise.all([
       prisma.order.aggregate({ _sum: { total: true }, where: { paymentStatus: 'paid' } }),
       prisma.order.count(),
-      prisma.order.findMany({ select: { email: true }, distinct: ['email'] }).then((r) => r.length),
+      prisma.$queryRaw<[{ count: bigint }]>`SELECT COUNT(DISTINCT email) as count FROM "Order"`.then((r) => Number(r[0].count)),
       prisma.order.count({ where: { status: 'pending' } }),
       prisma.product.count({ where: { status: 'active' } }),
-      prisma.order.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
-      prisma.product.findMany({ where: { stock: { lte: 5 }, status: 'active' }, include: { category: true }, orderBy: { stock: 'asc' }, take: 5 }),
+      prisma.order.findMany({ orderBy: { createdAt: 'desc' }, take: 5, select: { id: true, orderNumber: true, customerName: true, email: true, total: true, status: true, createdAt: true } }),
+      prisma.product.findMany({ where: { stock: { lte: 5 }, status: 'active' }, select: { id: true, name: true, stock: true, image: true, category: { select: { name: true } } }, orderBy: { stock: 'asc' }, take: 5 }),
     ]);
 
   const stats = [

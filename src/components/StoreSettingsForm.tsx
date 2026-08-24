@@ -48,13 +48,12 @@ export default function StoreSettingsForm({ settings }: { settings: Setting[] })
     setSaving(true);
     setSaved(false);
     try {
-      for (const [key, value] of Object.entries(form)) {
-        await fetch('/api/settings', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key, value }),
-        });
-      }
+      const items = Object.entries(form).map(([key, value]) => ({ key, value }));
+      await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      });
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (error) {

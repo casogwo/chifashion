@@ -33,13 +33,11 @@ export default function ContentEditor({ content }: { content: ContentItem[] }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      for (const item of items) {
-        await fetch('/api/content', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: item.key, value: item.value }),
-        });
-      }
+      await fetch('/api/content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items.map((item) => ({ key: item.key, value: item.value })) }),
+      });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (error) {

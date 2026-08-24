@@ -70,6 +70,8 @@ export default async function ProductPage({
             <img
               src={product.image}
               alt={product.name}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
             {product.salePrice && (
@@ -82,7 +84,7 @@ export default async function ProductPage({
             <div className="flex gap-2 mt-4">
               {images.slice(0, 4).map((img: string, i: number) => (
                 <div key={i} className="relative w-20 h-24 rounded-lg overflow-hidden bg-brand-50 border-2 border-brand-200">
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <img src={img} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

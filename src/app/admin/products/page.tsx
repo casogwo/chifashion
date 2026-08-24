@@ -50,7 +50,7 @@ export default async function AdminProductsPage() {
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       <div className="relative w-10 h-12 rounded overflow-hidden bg-brand-50 shrink-0">
-                        <img src={product.image} alt="" className="w-full h-full object-cover" />
+                        <img src={product.image} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <p className="font-medium">{product.name}</p>
@@ -107,7 +107,7 @@ export default async function AdminProductsPage() {
           <div key={product.id} className="bg-white rounded-xl border border-gray-100 p-4">
             <div className="flex gap-3">
               <div className="relative w-16 h-20 rounded-lg overflow-hidden bg-brand-50 shrink-0">
-                <img src={product.image} alt="" className="w-full h-full object-cover" />
+                <img src={product.image} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-sm truncate">{product.name}</p>
