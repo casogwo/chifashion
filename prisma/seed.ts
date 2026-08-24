@@ -478,13 +478,16 @@ async function main() {
     { key: 'store_name', value: 'ChiFashion' },
     { key: 'currency', value: 'NGN' },
     { key: 'currency_symbol', value: '₦' },
-    { key: 'phone', value: '+234 800 CHIFASHION' },
-    { key: 'email', value: 'hello@chifashion.com' },
+    { key: 'phone', value: '091645033555' },
+    { key: 'email', value: 'asogwochinazapeace@gmail.com' },
     { key: 'address', value: 'Lagos, Nigeria' },
     { key: 'shipping_threshold', value: '50000' },
     { key: 'shipping_fee', value: '2500' },
     { key: 'instagram', value: '@chifashion' },
     { key: 'twitter', value: '@chifashion' },
+    { key: 'bank_name', value: 'Guaranty Trust Bank (GTBank)' },
+    { key: 'account_number', value: '0637568363' },
+    { key: 'account_name', value: 'Asogwo Chinaza Peace' },
   ];
 
   for (const s of settings) {

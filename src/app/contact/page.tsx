@@ -26,7 +26,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Email</p>
-                  <p>hello@chifashion.com</p>
+                  <p>asogwochinazapeace@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -37,7 +37,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Phone</p>
-                  <p>+234 800 CHIFASHION</p>
+                  <p>091645033555</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">

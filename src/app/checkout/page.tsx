@@ -198,8 +198,7 @@ export default function CheckoutPage() {
               <h2 className="font-serif text-lg font-bold mb-4">Payment Method</h2>
               <div className="space-y-3">
                 {[
-                  { value: 'card', label: 'Card Payment', desc: 'Pay with debit/credit card' },
-                  { value: 'transfer', label: 'Bank Transfer', desc: 'Pay via bank transfer' },
+                  { value: 'transfer', label: 'Bank Transfer', desc: 'Pay via bank transfer to our GTBank account' },
                   { value: 'cod', label: 'Cash on Delivery', desc: 'Pay when you receive your order' },
                 ].map((method) => (
                   <label
@@ -225,6 +224,33 @@ export default function CheckoutPage() {
                   </label>
                 ))}
               </div>
+
+              {form.paymentMethod === 'transfer' && (
+                <div className="bg-brand-50 border border-brand-200 rounded-xl p-5 mt-4">
+                  <h3 className="font-serif font-bold text-sm mb-3">Bank Transfer Details</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Bank</span>
+                      <span className="font-medium">Guaranty Trust Bank (GTBank)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Account Number</span>
+                      <span className="font-medium">0637568363</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Account Name</span>
+                      <span className="font-medium">Asogwo Chinaza Peace</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Amount</span>
+                      <span className="font-bold text-brand-600">{formatPrice(total)}</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-3 border-t border-brand-200 pt-3">
+                    After transferring, please send your payment receipt to our WhatsApp or email so we can process your order.
+                  </p>
+                </div>
+              )}
               <div className="flex gap-3 mt-4">
                 <button
                   onClick={() => setStep(2)}
