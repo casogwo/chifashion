@@ -110,9 +110,14 @@ export default function ProductCard({ product }: { product: Product }) {
               </span>
             )}
           </div>
-          <p className="text-[11px] text-gray-400 mt-0.5">
-            Delivery: {formatPrice(product.deliveryFee || 2500)}
-          </p>
+          <div className="flex items-center gap-1.5 mt-1.5">
+            <span className="inline-flex items-center gap-1 bg-green-50 text-green-700 text-[11px] font-medium px-2 py-0.5 rounded-full border border-green-200">
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              Delivery: {formatPrice(product.deliveryFee || 2500)}
+            </span>
+          </div>
         </Link>
 
         <div className="relative">

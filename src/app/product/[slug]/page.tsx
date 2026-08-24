@@ -109,9 +109,12 @@ export default async function ProductPage({
               <span className="text-2xl font-bold text-gray-900">{formatPrice(product.price)}</span>
             )}
           </div>
-          <p className="text-sm text-gray-500 mb-6">
-            Delivery fee: <span className="font-medium text-gray-700">{formatPrice(product.deliveryFee || 2500)}</span>
-          </p>
+          <div className="inline-flex items-center gap-1.5 bg-green-50 text-green-700 text-sm font-medium px-3 py-1.5 rounded-full border border-green-200 mb-6">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            Delivery fee: {formatPrice(product.deliveryFee || 2500)}
+          </div>
 
           <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
 
