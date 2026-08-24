@@ -72,14 +72,16 @@ export default function Navbar() {
                 className="p-2.5 text-gray-600 hover:text-gray-900 transition-colors relative"
                 aria-label="Cart"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                {totalItems > 0 && (
-                  <span className="absolute top-0 right-0 translate-x-1 -translate-y-1 min-w-[16px] h-[16px] bg-brand-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 ring-2 ring-white">
-                    {totalItems}
-                  </span>
-                )}
+                <div className="relative">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  {totalItems > 0 && (
+                    <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px] bg-brand-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 ring-2 ring-white">
+                      {totalItems}
+                    </span>
+                  )}
+                </div>
               </Link>
               <span className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">
                 Cart ({totalItems} items)
