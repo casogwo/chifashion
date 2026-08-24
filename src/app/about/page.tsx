@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma';
-import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,20 +8,24 @@ export const metadata = {
 };
 
 export default async function AboutPage() {
-  const content = await prisma.content.findMany();
+  const content = await prisma.content.findMany({
+    where: { key: { in: ['hero_image', 'brand_story'] } },
+  });
   const contentMap = Object.fromEntries(content.map((c) => [c.key, c.value]));
 
   return (
     <>
       {/* Hero */}
       <section className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
-        <Image
-          src={contentMap.hero_image || ''}
-          alt="ChiFashion About"
-          fill
-          className="object-cover"
-          priority
-        />
+        {contentMap.hero_image ? (
+          <img
+            src={contentMap.hero_image}
+            alt="ChiFashion About"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-400 to-brand-600" />
+        )}
         <div className="absolute inset-0 bg-brand-900/60" />
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div>

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import ProductCard from '@/components/ProductCard';
@@ -23,8 +22,12 @@ async function getHomeData() {
       take: 8,
       orderBy: { createdAt: 'desc' },
     }),
-    prisma.content.findMany(),
-    prisma.storeSettings.findMany(),
+    prisma.content.findMany({
+      where: { key: { in: ['hero_tagline', 'hero_heading', 'hero_subheading', 'hero_cta', 'hero_image', 'promo_banner', 'brand_story', 'newsletter_heading', 'newsletter_text'] } },
+    }),
+    prisma.storeSettings.findMany({
+      where: { key: { in: ['phone', 'email', 'whatsapp', 'bank_name', 'account_number', 'account_name'] } },
+    }),
   ]);
 
   const contentMap = Object.fromEntries(content.map((c) => [c.key, c.value]));
@@ -39,13 +42,15 @@ export default async function HomePage() {
     <>
       {/* Hero Section */}
       <section className="relative h-[70vh] lg:h-[85vh] overflow-hidden">
-        <Image
-          src={contentMap.hero_image || ''}
-          alt="ChiFashion Hero"
-          fill
-          className="object-cover"
-          priority
-        />
+        {contentMap.hero_image ? (
+          <img
+            src={contentMap.hero_image}
+            alt="ChiFashion Hero"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-400 to-brand-600" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-900/70 via-brand-900/40 to-transparent" />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -223,12 +228,15 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="relative aspect-square rounded-2xl overflow-hidden">
-            <Image
-              src={contentMap.hero_image || ''}
-              alt="ChiFashion Brand"
-              fill
-              className="object-cover"
-            />
+            {contentMap.hero_image ? (
+              <img
+                src={contentMap.hero_image}
+                alt="ChiFashion Brand"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-brand-200 to-brand-400" />
+            )}
           </div>
         </div>
       </section>
