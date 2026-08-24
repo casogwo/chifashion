@@ -76,7 +76,7 @@ export default function Navbar() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
                 {totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-brand-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 ring-2 ring-white">
+                  <span className="absolute top-0 right-0 translate-x-1 -translate-y-1 min-w-[16px] h-[16px] bg-brand-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 ring-2 ring-white">
                     {totalItems}
                   </span>
                 )}
