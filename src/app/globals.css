@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --pink-primary: #ec4899;
-  --pink-dark: #be185d;
-  --pink-light: #fce7f3;
+  --pink-primary: #ff2983;
+  --pink-dark: #d0004a;
+  --pink-light: #fff0f7;
 }
 
 body {
@@ -34,14 +34,14 @@ h1, h2, h3, h4, h5, h6 {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #fdf2f8;
+  background: #fff0f7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #f9a8d4;
+  background: #ff94c4;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #f472b6;
+  background: #ff5ea0;
 }
 
 /* Product image hover */

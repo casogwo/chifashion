@@ -122,6 +122,7 @@ export default async function ProductPage({
               stock: product.stock,
               sizes,
               colors,
+              deliveryFee: product.deliveryFee || 2500,
             }}
           />
 

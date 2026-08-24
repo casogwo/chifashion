@@ -38,7 +38,7 @@ export default function CheckoutPage() {
       .catch(() => {});
   }, []);
 
-  const deliveryFee = settings.delivery_fee || 2500;
+  const deliveryFee = items.reduce((sum, item) => sum + (item.deliveryFee || 2500), 0);
   const total = subtotal + deliveryFee;
 
   const [step, setStep] = useState(1);

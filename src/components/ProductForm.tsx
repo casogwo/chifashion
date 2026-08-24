@@ -27,6 +27,7 @@ interface ProductData {
   status: string;
   occasion: string | null;
   gender: string;
+  deliveryFee: number;
 }
 
 export default function ProductForm({
@@ -55,6 +56,7 @@ export default function ProductForm({
     status: product?.status || 'active',
     occasion: product?.occasion || 'casual',
     gender: product?.gender || 'unisex',
+    deliveryFee: product?.deliveryFee || 2500,
   });
 
   const [gallery, setGallery] = useState<string[]>(product?.images || []);
@@ -195,7 +197,7 @@ export default function ProductForm({
         />
       </div>
 
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-4 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Price (₦) *</label>
           <input
@@ -224,6 +226,16 @@ export default function ProductForm({
             value={form.stock}
             onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })}
             required
+            min={0}
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-400"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Fee (₦)</label>
+          <input
+            type="number"
+            value={form.deliveryFee}
+            onChange={(e) => setForm({ ...form, deliveryFee: Number(e.target.value) })}
             min={0}
             className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-400"
           />

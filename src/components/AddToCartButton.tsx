@@ -14,6 +14,7 @@ interface Props {
     stock: number;
     sizes: string[];
     colors: string[];
+    deliveryFee?: number;
   };
 }
 
@@ -36,6 +37,7 @@ export default function AddToCartButton({ product }: Props) {
       color: selectedColor,
       stock: product.stock,
       quantity,
+      deliveryFee: product.deliveryFee || 2500,
     });
     setAdded(true);
     showToast(`${product.name} added to cart`, product.image, 'success', [

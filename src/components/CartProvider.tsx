@@ -12,6 +12,7 @@ export interface CartItem {
   color?: string;
   quantity: number;
   stock: number;
+  deliveryFee?: number;
 }
 
 interface CartContextType {

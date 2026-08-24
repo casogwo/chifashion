@@ -30,19 +30,6 @@ const SECTIONS = [
     ],
   },
   {
-    title: 'Delivery',
-    fields: [
-      { key: 'delivery_fee', label: 'Delivery Fee (₦)', type: 'text' },
-    ],
-  },
-  {
-    title: 'Shipping',
-    fields: [
-      { key: 'shipping_threshold', label: 'Free Shipping Threshold (₦)', type: 'text' },
-      { key: 'shipping_fee', label: 'Shipping Fee (₦)', type: 'text' },
-    ],
-  },
-  {
     title: 'Currency',
     fields: [
       { key: 'currency', label: 'Currency Code', type: 'text' },

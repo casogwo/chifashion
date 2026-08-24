@@ -19,6 +19,7 @@ interface Product {
   sizes: string[];
   colors: string[];
   stock: number;
+  deliveryFee?: number;
 }
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -55,6 +56,7 @@ export default function ProductCard({ product }: { product: Product }) {
       size,
       color: product.colors?.[0] || '',
       stock: product.stock,
+      deliveryFee: product.deliveryFee || 2500,
     });
     showToast(`${product.name} added to cart`, product.image, 'success', [
       { label: 'Continue Shopping' },

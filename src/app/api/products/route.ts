@@ -16,7 +16,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, slug, description, price, salePrice, categoryId, image, images, sizes, colors, stock, featured, status, occasion, gender } = body;
+    const { name, slug, description, price, salePrice, categoryId, image, images, sizes, colors, stock, featured, status, occasion, gender, deliveryFee } = body;
 
     if (!name || !description || !price || !categoryId || !image) {
       return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
@@ -41,6 +41,7 @@ export async function POST(request: Request) {
         status: status || 'active',
         occasion: occasion || null,
         gender: gender || 'unisex',
+        deliveryFee: Number(deliveryFee) || 2500,
       },
     });
 
@@ -61,7 +62,7 @@ export async function PUT(request: Request) {
     if (!id) return NextResponse.json({ success: false, error: 'Product ID required' }, { status: 400 });
 
     const body = await request.json();
-    const { name, slug, description, price, salePrice, categoryId, image, images, sizes, colors, stock, featured, status, occasion, gender } = body;
+    const { name, slug, description, price, salePrice, categoryId, image, images, sizes, colors, stock, featured, status, occasion, gender, deliveryFee } = body;
 
     const product = await prisma.product.update({
       where: { id },
@@ -81,6 +82,7 @@ export async function PUT(request: Request) {
         status: status || 'active',
         occasion: occasion || null,
         gender: gender || 'unisex',
+        deliveryFee: Number(deliveryFee) || 2500,
       },
     });
 

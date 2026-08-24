@@ -6,8 +6,8 @@ import Link from 'next/link';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal, totalItems } = useCart();
-  const deliveryFee = 2500;
-  const total = subtotal + deliveryFee;
+  const totalDelivery = items.reduce((sum, item) => sum + (item.deliveryFee || 2500), 0);
+  const total = subtotal + totalDelivery;
 
   if (items.length === 0) {
     return (
@@ -95,7 +95,7 @@ export default function CartPage() {
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Delivery Fee</span>
-            <span className="font-medium">{formatPrice(deliveryFee)}</span>
+            <span className="font-medium">{formatPrice(totalDelivery)}</span>
           </div>
           <div className="border-t border-brand-200 pt-2 flex justify-between">
             <span className="font-bold">Total</span>
