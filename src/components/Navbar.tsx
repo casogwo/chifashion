@@ -53,14 +53,14 @@ export default function Navbar() {
             <div className="relative group">
               <Link
                 href="/shop?search="
-                className="p-2.5 text-gray-600 hover:text-brand-600 hover:bg-brand-50 rounded-full transition-all"
+                className="p-2.5 text-gray-600 hover:text-gray-900 transition-colors"
                 aria-label="Search"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </Link>
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <span className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                 Search Products
               </span>
             </div>
@@ -69,7 +69,7 @@ export default function Navbar() {
             <div className="relative group">
               <Link
                 href="/cart"
-                className="p-2.5 text-gray-600 hover:text-brand-600 hover:bg-brand-50 rounded-full transition-all"
+                className="p-2.5 text-gray-600 hover:text-gray-900 transition-colors relative"
                 aria-label="Cart"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,14 +81,14 @@ export default function Navbar() {
                   </span>
                 )}
               </Link>
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <span className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">
                 Cart ({totalItems} items)
               </span>
             </div>
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2.5 text-gray-600 hover:text-brand-600 hover:bg-brand-50 rounded-full transition-all"
+              className="lg:hidden p-2.5 text-gray-600 hover:text-gray-900 transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
