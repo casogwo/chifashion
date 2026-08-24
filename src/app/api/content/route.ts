@@ -1,23 +1,24 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export async function PUT(request: Request) {
   try {
-    const { key, value } = await request.json();
+    const body = await request.json();
 
-    if (key && value !== undefined) {
+    if (body.key && body.value !== undefined) {
       await prisma.content.upsert({
-        where: { key },
-        update: { value },
-        create: { key, value },
+        where: { key: body.key },
+        update: { value: body.value },
+        create: { key: body.key, value: body.value },
       });
+      revalidatePath('/');
       return NextResponse.json({ success: true });
     }
 
-    const { items } = await request.json();
-    if (items && Array.isArray(items)) {
+    if (body.items && Array.isArray(body.items)) {
       await prisma.$transaction(
-        items.map((item: { key: string; value: string }) =>
+        body.items.map((item: { key: string; value: string }) =>
           prisma.content.upsert({
             where: { key: item.key },
             update: { value: item.value },
@@ -25,6 +26,7 @@ export async function PUT(request: Request) {
           })
         )
       );
+      revalidatePath('/');
       return NextResponse.json({ success: true });
     }
 
