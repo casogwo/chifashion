@@ -69,18 +69,14 @@ export default function Navbar() {
             <div className="relative group">
               <Link
                 href="/cart"
-                className={`p-2.5 rounded-full transition-all relative ${
-                  totalItems > 0
-                    ? 'bg-brand-500 text-white hover:bg-brand-600 shadow-md shadow-brand-200'
-                    : 'text-gray-600 hover:text-brand-600 hover:bg-brand-50'
-                }`}
+                className="p-2.5 text-gray-600 hover:text-brand-600 hover:bg-brand-50 rounded-full transition-all"
                 aria-label="Cart"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-bounce">
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-brand-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 ring-2 ring-white">
                     {totalItems}
                   </span>
                 )}
